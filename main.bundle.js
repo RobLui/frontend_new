@@ -16,7 +16,7 @@ webpackEmptyAsyncContext.id = "../../../../../src/$$_gendir lazy recursive";
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-inverse\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <a class=\"navbar-brand\" routerLink=\"/\">Overzicht</a>\n    </div>\n    <ul class=\"nav navbar-nav\">\n      <li><a routerLink=\"/trainers\">Trainers</a></li>\n      <li><a routerLink=\"/pokemon\">Pokemon</a></li>\n    </ul>\n  </div>\n</nav>\n\n<router-outlet></router-outlet>\n\n\n\n\n"
+module.exports = "<nav class=\"navbar navbar-inverse\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <a class=\"navbar-brand\" [routerLink]=\"['/']\">Overzicht</a>\n    </div>\n    <ul class=\"nav navbar-nav\">\n      <li><a [routerLink]=\"['uitleg']\">Uitleg</a></li>\n      <li><a [routerLink]=\"['trainers']\">Trainers</a></li>\n      <li><a [routerLink]=\"['pokemon']\">pokemon</a></li>\n    </ul>\n  </div>\n</nav>\n\n<router-outlet>\n\n</router-outlet>\n\n\n\n"
 
 /***/ }),
 
@@ -103,7 +103,16 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_3__angular_http__["c" /* HttpModule */],
-                __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* RouterModule */].forRoot([{
+                __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* RouterModule */].forRoot([
+                    {
+                        path: ' ',
+                        component: __WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* AppComponent */],
+                    },
+                    {
+                        path: 'uitleg',
+                        component: __WEBPACK_IMPORTED_MODULE_6__index__["a" /* IndexComponent */],
+                    },
+                    {
                         path: 'pokemon',
                         component: __WEBPACK_IMPORTED_MODULE_7__pokemon_list_pokemon_list_component__["a" /* PokemonListComponent */],
                     },
@@ -117,7 +126,7 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_8__pokemon_form_pokemon_form_component__["a" /* PokemonFormComponent */],
                 __WEBPACK_IMPORTED_MODULE_7__pokemon_list_pokemon_list_component__["a" /* PokemonListComponent */],
                 __WEBPACK_IMPORTED_MODULE_9__pokemon_box_pokemon_box_component__["a" /* PokemonBoxComponent */],
-                __WEBPACK_IMPORTED_MODULE_6__index__["a" /* PokemonComponent */],
+                __WEBPACK_IMPORTED_MODULE_6__index__["a" /* IndexComponent */],
                 __WEBPACK_IMPORTED_MODULE_10__trainer_list_trainer_list_component__["a" /* TrainerListComponent */],
                 __WEBPACK_IMPORTED_MODULE_12__trainer_box_trainer_box_component__["a" /* TrainerBoxComponent */],
                 __WEBPACK_IMPORTED_MODULE_11__trainer_form_trainer_form_component__["a" /* TrainerFormComponent */],
@@ -133,7 +142,7 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_8__pokemon_form_pokemon_form_component__["a" /* PokemonFormComponent */],
                 __WEBPACK_IMPORTED_MODULE_7__pokemon_list_pokemon_list_component__["a" /* PokemonListComponent */],
                 __WEBPACK_IMPORTED_MODULE_9__pokemon_box_pokemon_box_component__["a" /* PokemonBoxComponent */],
-                __WEBPACK_IMPORTED_MODULE_6__index__["a" /* PokemonComponent */],
+                __WEBPACK_IMPORTED_MODULE_6__index__["a" /* IndexComponent */],
                 __WEBPACK_IMPORTED_MODULE_10__trainer_list_trainer_list_component__["a" /* TrainerListComponent */],
                 __WEBPACK_IMPORTED_MODULE_12__trainer_box_trainer_box_component__["a" /* TrainerBoxComponent */],
                 __WEBPACK_IMPORTED_MODULE_11__trainer_form_trainer_form_component__["a" /* TrainerFormComponent */],
@@ -177,14 +186,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var EmitterServiceService = (function () {
     function EmitterServiceService(http) {
         this.http = http;
-        // private data url = 'http://58ac6e307cf949120009f3e5.mockapi.io/api/Pokemonz';
+        // POKEMON DATA URL
         this.url = 'https://599748ee3c298d0011c5de65.mockapi.io/api/pokemons';
+        // TRAINER DATA URL
         this.trainerurl = 'https://599748ee3c298d0011c5de65.mockapi.io/api/trainers';
     }
     // event emitter
     EmitterServiceService.get = function (ID) {
-        if (!this._emitters[ID])
+        if (!this._emitters[ID]) {
             this._emitters[ID] = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* EventEmitter */]();
+        }
         return this._emitters[ID];
     };
     // Fetch all existing pokemon
@@ -200,8 +211,8 @@ var EmitterServiceService = (function () {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]({ 'Content-Type': 'application/json' }); // ... Set content type to JSON
         var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers }); // Create a request option
         return this.http.post(this.url, body, options) // ...using post request
-            .map(function (res) { return res.json(); }) // ...and calling .json() on the response to return data
-            .catch(function (error) { return __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(error.json().error || 'Error - Adding failed, data is inserted tho..'); }); //...errors if any
+            .map(function (res) { return res.json(); })
+            .catch(function (error) { return __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(error.json().error || 'Error - Adding failed, data is inserted tho..'); });
     };
     // Update pokemon
     EmitterServiceService.prototype.updatePokemon = function (body) {
@@ -210,13 +221,13 @@ var EmitterServiceService = (function () {
         var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers }); // Create a request option
         return this.http.put(this.url + "/" + body['id'], body, options) // ...using put request
             .map(function (res) { return res.json(); }) // ...and calling .json() on the response to return data
-            .catch(function (error) { return __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(error.json().error || 'Error - Updating failed'); }); //...errors if any
+            .catch(function (error) { return __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(error.json().error || 'Error - Updating failed'); }); // ...errors if any
     };
     // Delete pokemon
     EmitterServiceService.prototype.removePokemon = function (id) {
         return this.http.delete(this.url + "/" + id) // ...using put request
             .map(function (res) { return res.json(); }) // ...and calling .json() on the response to return data
-            .catch(function (error) { return __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(error.json().error || 'Error - Removing failed'); }); //...errors if any
+            .catch(function (error) { return __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(error.json().error || 'Error - Removing failed'); }); // ...errors if any
     };
     // Fetch all existing trainers
     EmitterServiceService.prototype.getTrainers = function () {
@@ -231,8 +242,8 @@ var EmitterServiceService = (function () {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]({ 'Content-Type': 'application/json' }); // ... Set content type to JSON
         var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers }); // Create a request option
         return this.http.post(this.trainerurl, body, options) // ...using post request
-            .map(function (res) { return res.json(); }) // ...and calling .json() on the response to return data
-            .catch(function (error) { return __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(error.json().error || 'Error - Adding failed, data is inserted tho..'); }); //...errors if any
+            .map(function (res) { return res.json(); })
+            .catch(function (error) { return __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(error.json().error || 'Error - Adding failed, data is inserted tho..'); });
     };
     // Update trainer
     EmitterServiceService.prototype.updateTrainer = function (body) {
@@ -241,13 +252,13 @@ var EmitterServiceService = (function () {
         var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers }); // Create a request option
         return this.http.put(this.trainerurl + "/" + body['id'], body, options) // ...using put request
             .map(function (res) { return res.json(); }) // ...and calling .json() on the response to return data
-            .catch(function (error) { return __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(error.json().error || 'Error - Updating failed'); }); //...errors if any
+            .catch(function (error) { return __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(error.json().error || 'Error - Updating failed'); }); // ...errors if any
     };
     // Delete trainer
     EmitterServiceService.prototype.removeTrainer = function (id) {
         return this.http.delete(this.trainerurl + "/" + id) // ...using put request
             .map(function (res) { return res.json(); }) // ...and calling .json() on the response to return data
-            .catch(function (error) { return __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(error.json().error || 'Error - Removing failed'); }); //...errors if any
+            .catch(function (error) { return __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Observable"].throw(error.json().error || 'Error - Removing failed'); }); // ...errors if any
     };
     // data emitter
     EmitterServiceService._emitters = {};
@@ -266,7 +277,7 @@ var EmitterServiceService = (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PokemonComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return IndexComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -278,19 +289,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-var PokemonComponent = (function () {
-    function PokemonComponent() {
+var IndexComponent = (function () {
+    function IndexComponent() {
         this.listId = 'POKEMON_COMPONENT_LIST';
         this.editId = 'POKEMON_COMPONENT_EDIT';
+        this.trainereditId = 'TRAINER_COMPONENT_EDIT';
+        this.trainerlistId = 'TRAINER_COMPONENT_LIST';
     }
-    PokemonComponent = __decorate([
+    IndexComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Component */])({
-            selector: 'app-pokemon-widget',
-            template: " <div> \n                    <app-pokemon-form [listId]=\"listId\" [editId]=\"editId\"></app-pokemon-form>\n                    <app-pokemon-list [listId]=\"listId\" [editId]=\"editId\"></app-pokemon-list>\n    </div>",
+            selector: 'app-uitleg-widget',
+            template: "\n        <div class=\"container align-center\">\n            <div class=\"row justify-content-md-center\">\n                <div class=\"mbr-white col-md-10\">\n                    <h2>\n                        Uitleg:\n                    </h2>\n                    <div class=\"container\">\n                        <blockquote class=\"test\">\n                            <p>Functionaliteiten</p>\n                            <ul class=\"info\">\n                                <li>\n                                    <p>Voeg nieuwe trainers of pokemon toe\n                                    <p>\n                                        <button class=\"btn btn-secondary btn-sm\">\n                                            <a href=\"/uitleg#toevoegen\">toon hoe</a>\n                                        </button>\n                                    </p>\n                                    <!--<button class=\"btn btn-secondary btn-sm\">toon hoe</button></p>-->\n                                </li>\n                                <li>\n                                    <p>Pas trainers of pokemon aan\n                                    <p>\n                                        <button class=\"btn btn-secondary btn-sm\">\n                                            <a href=\"/uitleg#aanpassen\">toon hoe</a>\n                                        </button>\n                                    </p>\n                                    <!--<button class=\"btn btn-secondary btn-sm\">toon hoe</button></p>-->\n                                <li>\n                                    <p>Verwijder overbodige trainers en pokemon\n                                    <p>\n                                        <button class=\"btn btn-secondary btn-sm\">\n                                            <a href=\"/uitleg#verwijderen\">toon hoe</a>\n                                        </button>\n                                    </p>                                </li>\n                            </ul>\n                        </blockquote>\n                        <blockquote>\n                            <p>Klik om te beginnen op 1 van de 2 tabs die je in de navigatie ziet</p>\n                            <button class=\"btn btn-primary\">\n                                <a [routerLink]=\"['/pokemon']\">pokemon</a>\n                            </button>\n                            <button class=\"btn btn-secondary\">\n                                <a [routerLink]=\"['/trainers']\">trainers</a>\n                            </button>\n                        </blockquote>\n                        \n                        <!---->\n                            <div class=\"wrapper\">\n                                <!--TOEVOEGEN-->\n                                <div id=\"toevoegen\" class=\"overlay\">\n                                    <div class=\"popup\">\n                                        <h2>Info box</h2>\n                                        <a class=\"close\" href=\"/uitleg\">&times;</a>\n                                        <div class=\"content\">\n                                            <p>Klik op de trainers navigatie </p>\n                                            <p>Voer de gegevens van een trainer in</p>\n                                            <p>Druk op \"add\" knop om de trainer te bewaren</p>\n                                        </div>\n                                    </div>\n                                </div>\n                                <!--AANPASSEN-->\n                                <div id=\"aanpassen\" class=\"overlay\">\n                                    <a class=\"cancel\" href=\"/uitleg\"></a>\n                                    <div class=\"popup\">\n                                        <h2>Info box</h2>\n                                        <a class=\"close\" href=\"/uitleg\">&times;</a>\n                                        <div class=\"content\">\n                                            <p>Klik op het blauwe knopje</p>\n                                            <p>Voer de nieuwe gegevens in bovenaan</p>\n                                            <p>Bewaar de nieuwe gegevens</p>\n                                        </div>\n                                    </div>\n                                </div>\n                                <!--VERWIJDEREN-->\n                                <div id=\"verwijderen\" class=\"overlay\">\n                                    <div class=\"popup\">\n                                        <h2>Info box</h2>\n                                        <a class=\"close\" href=\"/uitleg\">&times;</a>\n                                        <div class=\"content\">\n                                            <p>Klik op de rode knop met het kruisje</p>\n                                            <p>De gegevens worden verwijderd!</p>\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                        <!---->\n                        \n                    </div>\n                </div>\n            </div>\n        </div>",
         }), 
         __metadata('design:paramtypes', [])
-    ], PokemonComponent);
-    return PokemonComponent;
+    ], IndexComponent);
+    return IndexComponent;
 }());
 //# sourceMappingURL=/Users/louise/Documents/School/frontend_bram/site/bram/src/index.js.map
 
@@ -335,7 +348,7 @@ var Pokemon = (function () {
 /***/ "../../../../../src/app/pokemon-box/pokemon-box.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"panel panel-default\">\n  <div class=\"panel-heading\">\n    Pokemon ID: {{pokemon.id}}\n  </div>\n  <div class=\"panel-body\">\n    <p>\n      <span>Name: {{pokemon.name}} </span>\n    </p>\n    <p>\n      <span>Type: {{pokemon.type}}</span>\n    </p>\n    <button class=\"btn btn-danger pull-right\" (click)=\"deletePokemon(pokemon.id)\">\n      <span class=\"glyphicon glyphicon-remove\"></span>\n    </button>\n    <button class=\"btn btn-info pull-right\" (click)=\"editPokemon()\">\n      <span class=\"glyphicon glyphicon-edit\"></span>\n    </button>\n  </div>\n</div>\n"
+module.exports = "<div class=\"panel panel-default\">\n  <div class=\"panel-heading\">\n    Pokemon ID: {{pokemon.id}}\n  </div>\n  <div class=\"panel-body\">\n    <p>\n      <span>Name: {{pokemon.name}} </span>\n    </p>\n    <p>\n      <span>Type: {{pokemon.type}}</span>\n    </p>\n    <button class=\"btn btn-danger pull-right\" (click)=\"deletePokemon(pokemon.id)\">\n      <span class=\"glyphicon glyphicon-remove\"></span>\n    </button>\n    <button class=\"btn btn-info pull-right\" (click)=\"editPokemon(event)\">\n      <span class=\"glyphicon glyphicon-edit\"></span>\n    </button>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -364,7 +377,7 @@ var PokemonBoxComponent = (function () {
     function PokemonBoxComponent(EmitterServiceService) {
         this.EmitterServiceService = EmitterServiceService;
     }
-    PokemonBoxComponent.prototype.editPokemon = function () {
+    PokemonBoxComponent.prototype.editPokemon = function (e) {
         // Emit edit event
         __WEBPACK_IMPORTED_MODULE_1__emitter_service_service__["a" /* EmitterServiceService */].get(this.editId).emit(this.pokemon);
     };
@@ -375,9 +388,9 @@ var PokemonBoxComponent = (function () {
             __WEBPACK_IMPORTED_MODULE_1__emitter_service_service__["a" /* EmitterServiceService */].get(_this.listId).emit(pokemonz);
         }, function (err) { console.log(err); });
     };
-    //Deze gaat af bij het inladen van de box-component
+    // Deze gaat af bij het inladen van de box-component
     PokemonBoxComponent.prototype.ngOnChanges = function (changes) {
-        console.log("pokemon box");
+        console.log('pokemon box');
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["L" /* Input */])(), 
@@ -441,7 +454,7 @@ var PokemonFormComponent = (function () {
     }
     PokemonFormComponent.prototype.submitPokemon = function () {
         var _this = this;
-        // Variable to hold a reference of addComment/updateComment
+        // Variable to hold a reference of addPokemon/updatePokemon
         var pokemonOperation;
         if (!this.editing) {
             // Create a new pokemon
@@ -451,28 +464,27 @@ var PokemonFormComponent = (function () {
             // Update an existing pokemon
             pokemonOperation = this.EmitterServiceService.updatePokemon(this.model);
         }
-        console.log(pokemonOperation);
         // Subscribe to observable
         pokemonOperation.subscribe(function (pokemonzz) {
             // Emit list event
-            __WEBPACK_IMPORTED_MODULE_1__emitter_service_service__["a" /* EmitterServiceService */].get(_this.listId).emit(pokemonzz);
+            __WEBPACK_IMPORTED_MODULE_1__emitter_service_service__["a" /* EmitterServiceService */].get(_this.listId).emit(__WEBPACK_IMPORTED_MODULE_2__model_pokemon__["a" /* Pokemon */]);
             // Empty model
             _this.model = new __WEBPACK_IMPORTED_MODULE_2__model_pokemon__["a" /* Pokemon */](new Date(), '', '');
             // Switch editing status
-            if (_this.editing)
+            if (_this.editing) {
                 _this.editing = !_this.editing;
+            }
         }, function (err) {
             // Log errors if any
             console.log(err);
         });
     };
-    //Deze gaat af bij de edit knop
+    // Deze gaat af bij de edit knop
     PokemonFormComponent.prototype.ngOnChanges = function () {
         var _this = this;
         __WEBPACK_IMPORTED_MODULE_1__emitter_service_service__["a" /* EmitterServiceService */].get(this.editId).subscribe(function (pokemon) {
             _this.model = pokemon;
             _this.editing = true;
-            console.log("form");
         });
     };
     __decorate([
@@ -500,7 +512,7 @@ var PokemonFormComponent = (function () {
 /***/ "../../../../../src/app/pokemon-list/pokemon-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-pokemon-form>\n\n</app-pokemon-form>\n<app-pokemon-box\n        [editId]=\"editId\" [listId]=\"listId\"\n        *ngFor=\"let pokemon of pokemon\"\n        [pokemon]=\"pokemon\">\n        Pokemon ID:{{pokemon.id}}\n</app-pokemon-box>\n\n"
+module.exports = "<app-pokemon-form [listId]=\"listId\" [editId]=\"editId\"></app-pokemon-form>\n<app-pokemon-box\n        [editId]=\"editId\" [listId]=\"listId\"\n        *ngFor=\"let pokemon of pokemon\"\n        [pokemon]=\"pokemon\">\n        Pokemon ID:{{pokemon.id}}\n</app-pokemon-box>\n\n"
 
 /***/ }),
 
@@ -539,12 +551,13 @@ var PokemonListComponent = (function () {
     PokemonListComponent.prototype.ngOnInit = function () {
         // Vuur de load pokemon functie uit
         this.loadPokemon();
-        console.log('test init list');
+        // console.log('ngoninit pokemonlistcomponent');
     };
     PokemonListComponent.prototype.ngOnChanges = function (changes) {
         var _this = this;
         __WEBPACK_IMPORTED_MODULE_1__emitter_service_service__["a" /* EmitterServiceService */].get(this.listId).subscribe(function (pokemon) {
             _this.loadPokemon();
+            // console.log('ngonchanges pokemonlistcomponent');
         });
     };
     __decorate([
@@ -572,7 +585,7 @@ var PokemonListComponent = (function () {
 /***/ "../../../../../src/app/trainer-box/trainer-box.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"panel panel-default\">\n  <div class=\"panel-heading\">\n    Trainer ID: {{trainer.id}}\n  </div>\n  <div class=\"panel-body\">\n    <div class=\"container\">\n      <div class=\"row\">\n        <div class=\"col-md-1\">\n          <p>Voornaam: {{trainer.name}} </p>\n        </div>\n        <div class=\"col-md-2\">\n          <p>Achternaam: {{trainer.lastname}}</p>\n        </div>\n        <div class=\"col-md-2\">\n        <p>Beschrijving: {{trainer.description}}</p>\n        </div>\n        <div class=\"col-md-1\">\n          <p>Leeftijd: {{trainer.age}}</p>\n        </div>\n      </div>\n    </div>\n\n    <button class=\"btn btn-danger pull-right\" (click)=\"deleteTrainer(trainer.id)\">\n      <span class=\"glyphicon glyphicon-remove\"></span>\n    </button>\n    <button class=\"btn btn-info pull-right\" (click)=\"editTrainers()\">\n      <span class=\"glyphicon glyphicon-edit\"></span>\n    </button>\n  </div>\n</div>\n"
+module.exports = "<div class=\"panel panel-default\">\n  <div class=\"panel-heading\">\n    Trainer ID: {{trainer.id}}\n  </div>\n  <div class=\"panel-body\">\n    <div class=\"container\">\n      <div class=\"row\">\n        <div class=\"col-md-1\">\n          <p>Voornaam: {{trainer.name}} </p>\n        </div>\n        <div class=\"col-md-2\">\n          <p>Achternaam: {{trainer.lastname}}</p>\n        </div>\n        <div class=\"col-md-2\">\n        <p>Beschrijving: {{trainer.description}}</p>\n        </div>\n        <div class=\"col-md-1\">\n          <p>Leeftijd: {{trainer.age}}</p>\n        </div>\n      </div>\n    </div>\n    <button class=\"btn btn-danger pull-right\" (click)=\"deleteTrainer(trainer.id)\">\n      <span class=\"glyphicon glyphicon-remove\"></span>\n    </button>\n    <button class=\"btn btn-info pull-right\" (click)=\"editTrainer()\" >\n      <span class=\"glyphicon glyphicon-edit\"></span>\n    </button>\n  </div>\n</div>\n<router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -600,6 +613,7 @@ var TrainerBoxComponent = (function () {
     // Constructor
     function TrainerBoxComponent(EmitterServiceService) {
         this.EmitterServiceService = EmitterServiceService;
+        this.editing = false;
     }
     TrainerBoxComponent.prototype.editTrainer = function () {
         // Emit edit event
@@ -608,13 +622,16 @@ var TrainerBoxComponent = (function () {
     TrainerBoxComponent.prototype.deleteTrainer = function (id) {
         var _this = this;
         // Call removeComment() from CommentService to delete comment
-        this.EmitterServiceService.removeTrainer(id).subscribe(function (trainerz) {
-            __WEBPACK_IMPORTED_MODULE_1__emitter_service_service__["a" /* EmitterServiceService */].get(_this.trainerlistId).emit(trainerz);
+        this.EmitterServiceService.removeTrainer(id).subscribe(function (trainer) {
+            __WEBPACK_IMPORTED_MODULE_1__emitter_service_service__["a" /* EmitterServiceService */].get(_this.trainerlistId).emit(trainer);
         }, function (err) { console.log(err); });
     };
-    TrainerBoxComponent.prototype.ngOnChanges = function () {
-        // this.EmitterServiceService.getPokemon();
-        console.log("init trainer box");
+    TrainerBoxComponent.prototype.ngOnChanges = function (changes) {
+        var _this = this;
+        __WEBPACK_IMPORTED_MODULE_1__emitter_service_service__["a" /* EmitterServiceService */].get(this.trainereditId).subscribe(function (trainer) {
+            _this.model = trainer;
+            _this.editing = true;
+        });
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["L" /* Input */])(), 
@@ -645,7 +662,7 @@ var TrainerBoxComponent = (function () {
 /***/ "../../../../../src/app/trainer-form/trainer-form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form (ngSubmit)=\"submitTrainers()\">\n  <div class=\"form-group\">\n    <div class=\"input-group\">\n      <span class=\"input-group-addon\" id=\"basic-addon1\"><span class=\"glyphicon glyphicon-user\"></span></span>\n      <input type=\"text\" class=\"form-control\" placeholder=\"Voornaam\" [(ngModel)]=\"model.name\" name=\"name\" required=\"required\">\n      <input type=\"text\" class=\"form-control\" placeholder=\"Achternaam\" [(ngModel)]=\"model.lastname\" name=\"lastname\" required=\"required\">\n      <input type=\"text\" class=\"form-control\" placeholder=\"Beschrijving\" [(ngModel)]=\"model.description\" name=\"description\" required=\"required\">\n      <input type=\"text\" class=\"form-control\" placeholder=\"Achternaam\" [(ngModel)]=\"model.age\" name=\"age\" required=\"required\">\n    </div>\n    <div class=\"add-trainer\">\n      <button *ngIf=\"!editing \" type=\"submit\" class=\"btn btn-primary btn-block\">Add</button>\n      <button *ngIf=\"editing \" type=\"submit\" class=\"btn btn-warning btn-block\">Update</button>\n    </div>\n  </div>\n</form>\n"
+module.exports = "<form (ngSubmit)=\"submitTrainer()\">\n  <div class=\"form-group\">\n    <div class=\"input-group\">\n      <span class=\"input-group-addon\" id=\"basic-addon1\"><span class=\"glyphicon glyphicon-user\"></span></span>\n      <input type=\"text\" class=\"form-control\" placeholder=\"Voornaam\" [(ngModel)]=\"model.name\" name=\"name\" required=\"required\">\n      <input type=\"text\" class=\"form-control\" placeholder=\"Achternaam\" [(ngModel)]=\"model.lastname\" name=\"lastname\" required=\"required\">\n      <input type=\"text\" class=\"form-control\" placeholder=\"Beschrijving\" [(ngModel)]=\"model.description\" name=\"description\" required=\"required\">\n      <input type=\"text\" class=\"form-control\" placeholder=\"Achternaam\" [(ngModel)]=\"model.age\" name=\"age\" required=\"required\">\n    </div>\n    <div class=\" add-trainer \">\n      <button *ngIf=\"!editing \" type=\"submit\" class=\"btn btn-primary btn-block\">Add</button>\n      <button *ngIf=\"editing \" type=\"submit\" class=\"btn btn-warning btn-block\">Update</button>\n    </div>\n  </div>\n</form>\n"
 
 /***/ }),
 
@@ -672,11 +689,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var TrainerFormComponent = (function () {
     function TrainerFormComponent(EmitterServiceService) {
         this.EmitterServiceService = EmitterServiceService;
-        // Local properties
         this.model = new __WEBPACK_IMPORTED_MODULE_2__model_Trainer__["a" /* Trainer */](new Date(), '', '', '', null);
         this.editing = false;
     }
-    TrainerFormComponent.prototype.SubmitTrainer = function () {
+    TrainerFormComponent.prototype.submitTrainer = function () {
         var _this = this;
         // Variable to hold a reference of addComment/updateComment
         var trainerOperation;
@@ -690,45 +706,55 @@ var TrainerFormComponent = (function () {
         }
         // console.log(trainerOperation);
         // Subscribe to observable
-        trainerOperation.subscribe(function (trainerr) {
+        trainerOperation.subscribe(function (trainer) {
             // Emit list event
-            __WEBPACK_IMPORTED_MODULE_1__emitter_service_service__["a" /* EmitterServiceService */].get(_this.listId).emit(trainerr);
+            __WEBPACK_IMPORTED_MODULE_1__emitter_service_service__["a" /* EmitterServiceService */].get(_this.trainerlistId).emit(trainer);
             // Empty model
             _this.model = new __WEBPACK_IMPORTED_MODULE_2__model_Trainer__["a" /* Trainer */](new Date(), '', '', '', null);
             // Switch editing status
-            if (_this.editing)
+            if (_this.editing) {
                 _this.editing = !_this.editing;
+            }
         }, function (err) {
             // Log errors if any
             console.log(err);
         });
     };
-    //Deze gaat af bij de edit knop
+    TrainerFormComponent.prototype.editTrainer = function () {
+        // Emit edit event
+        __WEBPACK_IMPORTED_MODULE_1__emitter_service_service__["a" /* EmitterServiceService */].get(this.trainereditId).emit(this.trainerlistId);
+        this.model = this.trainer;
+        this.editing = true;
+    };
+    // Deze gaat af bij de edit knop
     TrainerFormComponent.prototype.ngOnChanges = function () {
         var _this = this;
-        __WEBPACK_IMPORTED_MODULE_1__emitter_service_service__["a" /* EmitterServiceService */].get(this.editId).subscribe(function (trainer) {
+        __WEBPACK_IMPORTED_MODULE_1__emitter_service_service__["a" /* EmitterServiceService */].get(this.trainereditId).subscribe(function (trainer) {
             _this.model = trainer;
             _this.editing = true;
-            console.log("form trainer");
         });
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["L" /* Input */])(), 
-        __metadata('design:type', String)
-    ], TrainerFormComponent.prototype, "editId", void 0);
+        __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__model_Trainer__["a" /* Trainer */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__model_Trainer__["a" /* Trainer */]) === 'function' && _a) || Object)
+    ], TrainerFormComponent.prototype, "trainer", void 0);
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["L" /* Input */])(), 
         __metadata('design:type', String)
-    ], TrainerFormComponent.prototype, "listId", void 0);
+    ], TrainerFormComponent.prototype, "trainereditId", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["L" /* Input */])(), 
+        __metadata('design:type', String)
+    ], TrainerFormComponent.prototype, "trainerlistId", void 0);
     TrainerFormComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Component */])({
             selector: 'app-trainer-form',
             template: __webpack_require__("../../../../../src/app/trainer-form/trainer-form.component.html"),
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__emitter_service_service__["a" /* EmitterServiceService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__emitter_service_service__["a" /* EmitterServiceService */]) === 'function' && _a) || Object])
+        __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__emitter_service_service__["a" /* EmitterServiceService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__emitter_service_service__["a" /* EmitterServiceService */]) === 'function' && _b) || Object])
     ], TrainerFormComponent);
     return TrainerFormComponent;
-    var _a;
+    var _a, _b;
 }());
 //# sourceMappingURL=/Users/louise/Documents/School/frontend_bram/site/bram/src/trainer-form.component.js.map
 
@@ -737,7 +763,7 @@ var TrainerFormComponent = (function () {
 /***/ "../../../../../src/app/trainer-list/trainer-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-trainer-form>\n\n</app-trainer-form>\n<app-trainer-box\n        [trainereditId]=\"trainereditId\"\n        [trainerlistId]=\"trainerlistId\"\n        *ngFor=\"let trainer of trainer\"\n        [trainer]=\"trainer\">\n        Trainer ID:{{trainer.id}}\n</app-trainer-box>\n"
+module.exports = "<app-trainer-form [trainerlistId]=\"trainerlistId\" [trainereditId]=\"trainereditId\"></app-trainer-form>\n\n<app-trainer-box\n        [trainereditId]=\"trainereditId\" [trainerlistId]=\"trainerlistId\"\n        *ngFor=\"let trainer of trainer\"\n        [trainer]=\"trainer\">\n        Trainer ID:{{trainer.id}}\n</app-trainer-box>\n"
 
 /***/ }),
 
@@ -764,7 +790,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var TrainerListComponent = (function () {
     function TrainerListComponent(EmitterServiceService) {
         this.EmitterServiceService = EmitterServiceService;
-        this.trainermodel = new __WEBPACK_IMPORTED_MODULE_2__model_Trainer__["a" /* Trainer */](new Date(), '', '', '', null);
+        this.model = new __WEBPACK_IMPORTED_MODULE_2__model_Trainer__["a" /* Trainer */](new Date(), '', '', '', null);
+        this.editing = false;
     }
     TrainerListComponent.prototype.loadTrainers = function () {
         var _this = this;
@@ -776,13 +803,13 @@ var TrainerListComponent = (function () {
             console.log(err); // Log errors als er zijn
         });
     };
-    TrainerListComponent.prototype.editTrainers = function () {
+    TrainerListComponent.prototype.editTrainer = function () {
         // Emit edit event
         __WEBPACK_IMPORTED_MODULE_1__emitter_service_service__["a" /* EmitterServiceService */].get(this.trainereditId).emit(this.trainer);
     };
     TrainerListComponent.prototype.ngOnInit = function () {
-        this.loadTrainers();
         // Vuur de load trainer functie uit
+        this.loadTrainers();
     };
     TrainerListComponent.prototype.ngOnChanges = function (changes) {
         var _this = this;
@@ -791,6 +818,10 @@ var TrainerListComponent = (function () {
         function (// Bind to view/html component
             err) {
             console.log(err); // Log errors als er zijn
+        });
+        __WEBPACK_IMPORTED_MODULE_1__emitter_service_service__["a" /* EmitterServiceService */].get(this.trainereditId).subscribe(function (trainer) {
+            _this.model = trainer;
+            _this.editing = true;
         });
     };
     __decorate([
